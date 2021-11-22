@@ -1,13 +1,27 @@
 from typing import List
 
+#from src import crud
+
 from fastapi import Depends, FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
+
 from sqlalchemy.orm import Session
 
+#from . import crud, models, schemas
 from . import crud, models, schemas
 from .database import SessionLocal, engine
+from .config import origins
 
 models.Base.metadata.create_all(bind=engine)
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # Dependency
 def get_db():
@@ -16,6 +30,9 @@ def get_db():
         yield db
     finally:
         db.close()
+@app.get("/")
+def root ():
+    return {"message":"Welcome"}
 
 @app.post("/users/", response_model=schemas.User)
 def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
