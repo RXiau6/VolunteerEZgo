@@ -10,7 +10,7 @@ from sqlalchemy.orm import Session
 #from . import crud, models, schemas
 from . import crud, models, schemas
 from .database import SessionLocal, engine
-from .config import origins
+from .config import SQLALCHEMY_DATABASE_URL, origins
 
 models.Base.metadata.create_all(bind=engine)
 app = FastAPI()
