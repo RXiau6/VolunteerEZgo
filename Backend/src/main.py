@@ -10,14 +10,14 @@ from sqlalchemy.orm import Session
 #from . import crud, models, schemas
 from . import crud, models, schemas
 from .database import SessionLocal, engine
-from .config import SQLALCHEMY_DATABASE_URL, origins
+from .config import SQLALCHEMY_DATABASE_URL
 
 models.Base.metadata.create_all(bind=engine)
 app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
