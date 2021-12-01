@@ -1,5 +1,6 @@
+import re
 from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, Date, DateTime, Time, Float
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relation, relationship
 
 from .database import Base
 
@@ -16,16 +17,15 @@ class User(Base):
     event = relationship("Event")
 class Category(Base):
     __tablename__ = "category"
-    id = Column(Integer,primary_key=True, index=True)
-    name = Column(String(20))
-    hold_place = Column(String(10))
+    type = Column(String(20)) #活動類別
+    hold_place = Column(String(10)) #舉辦地點
     
     event = relationship("Event")
 class Event(Base):
     __tablename__ = "events"
 
     id = Column(Integer, primary_key=True, index=True)
-    types = Column(String, ForeignKey('category.name'))
+    types = Column(String, ForeignKey('category.type'))
     name = Column(String(128))
     description = Column(String(1024))
     host_id = Column(Integer, ForeignKey('user.id'))
@@ -36,5 +36,7 @@ class Event(Base):
     Auth_hour = Column(Float)
     number_of_attendable = Column(Integer)
     number_of_registerd = Column(Integer)
+
+    users = relationship()
 
 
