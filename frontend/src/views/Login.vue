@@ -8,23 +8,23 @@
 
             <div class="mb-md-5 mt-md-4 pb-5">
 
-              <h2 class="fw-bold mb-2 text-uppercase">Login</h2>
+              <h2 class="fw-bold mb-2 text-uppercase">登入</h2>
               <p class="text-white-50 mb-5">Please enter your login and password!</p>
 
               <div class="form-outline form-white mb-4">
                 <input type="email" id="typeEmailX" class="form-control form-control-lg" />
-                <label class="form-label" for="typeEmailX">Email</label>
+                <label class="form-label" for="typeEmailX">電子信箱</label>
               </div>
 
               <div class="form-outline form-white mb-4">
                 <input type="password" id="typePasswordX" class="form-control form-control-lg" />
-                <label class="form-label" for="typePasswordX">Password</label>
+                <label class="form-label" for="typePasswordX">密碼</label>
               </div>
 
-              <p class="small mb-5 pb-lg-2"><a class="text-white-50" href="#!">Forgot password?</a></p>
+              <p class="small mb-5 pb-lg-2"><a class="text-white-50" href="#!">忘記密碼</a></p>
 
              <form @submit.prevent="login">
-              <button class="btn btn-outline-light btn-lg px-5" type="submit">Login</button>
+              <button class="btn btn-outline-light btn-lg px-5" type="submit">登入</button>
              </form>
 
               <div class="d-flex justify-content-center text-center mt-4 pt-1">
@@ -34,7 +34,7 @@
               </div>
             </div>
             <div>
-              <p class="mb-0">Don't have an account? <a href="#!" class="text-white-50 fw-bold">Sign Up</a></p>
+              <p class="mb-0">還沒有帳號嗎? <a href="/register" class="text-white-50 fw-bold">註冊</a></p>
             </div>
           </div>
         </div>
@@ -45,22 +45,22 @@
 </template>
 
 <script>
-  export default {
-    data () {
-      return {
-        userName: '',
-        password: '',
-      }
-    },
-    methods: {
-      login(){
-        let auth = true;
-
-        if( auth )
-          this.$router.push('/');
-        else
-          alert('login failed')
-      }
-    } 
+export default {
+  data(){
+    return {
+      email: '',
+      password: '',
+    }
+  },
+  methods: {
+    Login(){
+            this.axios.post('http://localhost:8000/users/',{
+              "email":this.email,
+              "password":this.password
+            }).then((response) => {
+  console.log(response.data)
+})
+    }
   }
+}
 </script>
