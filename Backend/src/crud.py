@@ -13,15 +13,9 @@ def get_users(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.User).offset(skip).limit(limit).all()
 
 def create_user(db: Session, user: schemas.UserCreate):
-<<<<<<< HEAD
     salt = salt_gen()
-    
-    fake_hashed_password = user.password + salt
-    db_user = models.User(email=user.email, hashed_passwd=fake_hashed_password)
-=======
-    fake_hashed_password = user.password + "notreallyhashed"
-    db_user = models.User(email=user.email, hashed_passwd=fake_hashed_password, nick_name=user.nick_name, birth=user.birth)
->>>>>>> 079dcd78ae1e1f0ce1bec321584ccef6c0b3852a
+    password = user.password + salt
+    db_user = models.User(email=user.email, hashed_passwd=password, nick_name=user.nick_name, birth=user.birth)
     db.add(db_user)
     db.commit()
     db.refresh(db_user)
@@ -37,5 +31,4 @@ def salt_gen():
     salt = ''.join(str(e) for e in letter)
     return salt
 
-def hashing():
-    
+def check_password(db: Session, ):
