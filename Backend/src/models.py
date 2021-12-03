@@ -13,8 +13,8 @@ class User(Base):
     hashed_passwd = Column(String(60))
     birth = Column(Date)
     is_active = Column(Boolean, default=False)
-
-    event = relationship("Event",back_populates="Users")
+    salt = Column(String(16))
+    event = relationship("Event")
 # class Category(Base):
 #     __tablename__ = "category"
 #     type = Column(String(20)) #活動類別
@@ -37,4 +37,4 @@ class Event(Base):
     number_of_attendable = Column(Integer)
     number_of_registerd = Column(Integer)
 
-    users = relationship("Users", back_populates="Event")
+    # users = relationship("User", back_populates="Event")

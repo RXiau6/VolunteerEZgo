@@ -11,9 +11,11 @@ class UserCreate(UserBase):
     nick_name: str
     birth: str
     password: str
+
     
 
 class User(UserBase):
+    # salt: str
     id: int
     is_active: bool
     class Config:
