@@ -41,6 +41,13 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
         raise HTTPException(status_code=400, detail="Email already registered")
     return crud.create_user(db=db, user=user)
 
+@app.post("/login/", response_model=schemas.User)
+def login_user(from_data: schemas.UserLogin, db: Session = Depends(get_db)):
+    auth = crud.user_auth(db,from_data)
+    if auth:
+        raise HTTPException(status_code=400, detail="帳號或密碼錯誤")
+    return HTTPException(status_code=200,detail="登入成功！")
+        
 
 @app.get("/users/", response_model=List[schemas.User])
 def read_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):

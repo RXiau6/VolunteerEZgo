@@ -1,6 +1,9 @@
 from pydantic import networks
 from sqlalchemy.orm import Session
 import random,string,hashlib
+from sqlalchemy.sql.expression import false, true
+
+from sqlalchemy.sql.functions import mode
 from . import models, schemas
 
 def get_user(db: Session, user_id: int):
@@ -15,14 +18,22 @@ def get_users(db: Session, skip: int = 0, limit: int = 100):
 
 def create_user(db: Session, user: schemas.UserCreate):
     new_salt = salt_gen()
-    # password = user.password + new_salt
     db_user = models.User(salt=new_salt,email=user.email, hashed_passwd=user.password, nick_name=user.nick_name, birth=user.birth)
     db.add(db_user)
     db.commit()
     db.refresh(db_user)
     return db_user
 
-# def check_user(db: Session, user: schemas.User):
+def user_auth(db: Session, user: schemas.UserLogin):
+    if (db.query(models.User).filter(models.User.email != user.email)):
+        print (db.query(models.User).filter(models.User.email).first())
+        print (user.email)
+        return True
+    if (db.query(models.User).filter(models.User.hashed_passwd != user.password)):
+        print (db.query(models.User).filter(models.User.hashed_passwd).first())
+        print (user.password)
+        return True
+    return False
 
 def salt_gen():
     letter = []
@@ -34,4 +45,3 @@ def salt_gen():
     salt = ''.join(str(e) for e in letter)
     return salt
 
-# def check_password(db: Session, ):
