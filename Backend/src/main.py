@@ -6,6 +6,7 @@ from fastapi import Depends, FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 
 from sqlalchemy.orm import Session
+from sqlalchemy.sql.expression import column
 
 #from . import crud, models, schemas
 from . import crud, models, schemas
@@ -41,11 +42,14 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
         raise HTTPException(status_code=400, detail="Email already registered")
     return crud.create_user(db=db, user=user)
 
-@app.post("/login/", response_model=schemas.User)
+@app.post("/login/")
 def login_user(from_data: schemas.UserLogin, db: Session = Depends(get_db)):
-    auth = crud.user_auth(db,from_data)
-    if auth:
-        raise HTTPException(status_code=400, detail="帳號或密碼錯誤")
+    db_user = crud.get_user_by_email(db, email=from_data.email)
+    if db_user:
+        if from_data.password != db_user.__dict__['hashed_passwd']:
+            raise HTTPException(status_code=400, detail="密碼錯誤！")
+    else:
+        raise HTTPException(status_code=400, detail="查無此帳號")
     return HTTPException(status_code=200,detail="登入成功！")
         
 
