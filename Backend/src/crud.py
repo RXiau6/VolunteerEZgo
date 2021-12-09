@@ -1,4 +1,5 @@
 from pydantic import networks
+from sqlalchemy import types
 from sqlalchemy.orm import Session
 import random,string,hashlib
 from sqlalchemy.sql.expression import false, true
@@ -40,6 +41,24 @@ def user_auth(db: Session, user: schemas.UserLogin):
         return True
     return False
 
+def create_event(db: Session, user:schemas.User, event:schemas.EventCreate):
+    db_event = models.Event(
+        types=event.types,
+        name=event.name,
+        description=event.description,
+        host_id=user.id,
+        register_deadline=event.register_deadline,
+        start_date=event.start_date,
+        over_date=event.over_date,
+        during_time=event.during_time,
+        Auth_hour=event.Auth_hour,
+        number_of_attendable=event.number_of_attendable
+        )
+    db.add(db_event)
+    db.commit
+    db.refresh(db_event)
+    return db_event
+    
 def salt_gen():
     letter = []
     for i in range(16):

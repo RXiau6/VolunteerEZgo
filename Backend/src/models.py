@@ -35,6 +35,6 @@ class Event(Base):
     during_time = Column(Time)
     Auth_hour = Column(Float)
     number_of_attendable = Column(Integer)
-    number_of_registerd = Column(Integer)
+    number_of_registerd = Column(Integer,default=0)
 
     # users = relationship("User", back_populates="Event")
