@@ -4,6 +4,8 @@ from sqlalchemy.sql.sqltypes import String
 
 from pydantic import BaseModel
 
+class SessionData (BaseModel):
+    username: str
 class UserBase(BaseModel):
     email: str
 
