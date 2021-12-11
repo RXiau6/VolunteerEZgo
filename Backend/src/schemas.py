@@ -1,3 +1,4 @@
+import datetime
 from typing import List, Optional
 
 from sqlalchemy.sql.sqltypes import String
@@ -6,6 +7,8 @@ from pydantic import BaseModel
 
 class SessionData (BaseModel):
     username: str
+    expired: datetime.datetime
+
 class UserBase(BaseModel):
     email: str
 

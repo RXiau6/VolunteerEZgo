@@ -1,4 +1,5 @@
 from typing import List
+import datetime 
 
 #Fastapi
 
@@ -142,7 +143,7 @@ from uuid import uuid4
 async def create_session(name: str, response: Response):
 
     session = uuid4()
-    data = schemas.SessionData(username=name)
+    data = schemas.SessionData(username=name,expired=datetime.datetime.now() + datetime.timedelta(seconds=30))
 
     await backend.create(session, data)
     cookie.attach_to_response(response, session)
@@ -152,6 +153,8 @@ async def create_session(name: str, response: Response):
 
 @app.get("/whoami", dependencies=[Depends(cookie)])
 async def whoami(session_data: schemas.SessionData = Depends(verifier)):
+    if (datetime.datetime.now() > session_data.expired):
+        raise HTTPException(status_code=400,detail="cookie expired,login agian")
     return session_data
 
 
