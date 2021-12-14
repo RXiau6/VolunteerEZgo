@@ -136,7 +136,11 @@ def read_user(user_id: int, db: Session = Depends(get_db)):
     if db_user is None:
         raise HTTPException(status_code=404, detail="User not found")
     return db_user
+# event
 
+@app.post ("/event/create/")
+def create_event(db:Session = Depends(get_db), event: schemas.EventCreate):
+    
 # session route
 from uuid import uuid4
 @app.post("/create_session/{name}")

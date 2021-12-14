@@ -41,12 +41,12 @@ def user_auth(db: Session, user: schemas.UserLogin):
         return True
     return False
 
-def create_event(db: Session, user:schemas.User, event:schemas.EventCreate):
+def create_event(db: Session,event:schemas.EventCreate):
     db_event = models.Event(
         types=event.types,
         name=event.name,
         description=event.description,
-        host_id=user.id,
+        # host_id=user.id,
         register_deadline=event.register_deadline,
         start_date=event.start_date,
         over_date=event.over_date,
