@@ -56,7 +56,7 @@ export default {
   },
   methods: {
     register(){
-            this.axios.post('http://localhost:8000/register/',{
+            this.axios.post('http://127.0.0.1:8000/register/',{
               "email":this.email,
               "nick_name":this.nick_name,
               "birth":this.birth,
