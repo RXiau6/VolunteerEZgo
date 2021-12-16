@@ -12,18 +12,18 @@
               <p class="text-white-50 mb-5">Please enter your login and password!</p>
 
               <div class="form-outline form-white mb-4">
-                <input type="email" id="typeEmailX" class="form-control form-control-lg" />
+                <input type="email" id="typeEmailX" class="form-control form-control-lg" v-model="email" />
                 <label class="form-label" for="typeEmailX">電子信箱</label>
               </div>
 
               <div class="form-outline form-white mb-4">
-                <input type="password" id="typePasswordX" class="form-control form-control-lg" />
+                <input type="password" id="typePasswordX" class="form-control form-control-lg" v-model="password"/>
                 <label class="form-label" for="typePasswordX">密碼</label>
               </div>
 
               <p class="small mb-5 pb-lg-2"><a class="text-white-50" href="#!">忘記密碼</a></p>
 
-             <form @submit.prevent="login">
+             <form @submit.prevent="Login">
               <button class="btn btn-outline-light btn-lg px-5" type="submit">登入</button>
              </form>
 
@@ -54,13 +54,13 @@ export default {
   },
   methods: {
     Login(){
-            this.axios.post('http://localhost:8000/users/',{
+            this.axios.post('http://127.0.0.1:8000/login/',{
               "email":this.email,
               "password":this.password
             }).then((response) => {
-  console.log(response.data)
-})
-    }
+            console.log(response.data)
+            })
+          }
   }
 }
 </script>
