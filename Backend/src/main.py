@@ -111,13 +111,14 @@ def read_user(user_id: int, db: Session = Depends(get_db)):
 
 @app.post ("/event/create/")
 def create_event(event: schemas.EventCreate, db:Session = Depends(get_db)):
-    if (crud.get_event_by_name):
+    if (crud.get_event_by_name(db=db,name=event.name)):
         raise HTTPException(400,"活動名稱重複")
     return crud.create_event(db=db,event=event)
 
 @app.get ("/events/{page_num}")
-def get_events():
-    return 0
+def get_events(page_num: int, db: Session = Depends(get_db)):
+    events = crud.get_events(db, skip=page_num*12)
+    return events
 # session route
 # from uuid import uuid4
 # @app.post("/create_session/{name}")
