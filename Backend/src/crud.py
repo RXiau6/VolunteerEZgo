@@ -24,12 +24,20 @@ def get_users(db: Session, skip: int = 0, limit: int = 100):
 
 def create_user(db: Session, user: schemas.UserCreate):
     new_salt = salt_gen()
-    db_user = models.User(salt=new_salt,email=user.email, hashed_passwd=user.password, nick_name=user.nick_name, birth=user.birth)
+    db_user = models.User(
+        salt=new_salt,
+        email=user.email, 
+        hashed_passwd=user.password, 
+        nick_name=user.nick_name, 
+        birth=user.birth)
     db.add(db_user)
     db.commit()
     db.refresh(db_user)
     return db_user
 
+def get_event_by_name(db: Session, name: str):
+
+    return db.query(models.Event).filter(models.Event.name == name).first()
 def user_auth(db: Session, user: schemas.UserLogin):
     if (db.query(models.User).filter(models.User.email != user.email)):
         print (db.query(models.User).filter(models.User.email).first())
@@ -46,7 +54,7 @@ def create_event(db: Session,event:schemas.EventCreate):
         types=event.types,
         name=event.name,
         description=event.description,
-        # host_id=user.id,
+        # host_id="1",
         register_deadline=event.register_deadline,
         start_date=event.start_date,
         over_date=event.over_date,
@@ -55,7 +63,7 @@ def create_event(db: Session,event:schemas.EventCreate):
         number_of_attendable=event.number_of_attendable
         )
     db.add(db_event)
-    db.commit
+    db.commit()
     db.refresh(db_event)
     return db_event
     

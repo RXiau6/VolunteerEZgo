@@ -43,5 +43,5 @@ class EventCreate(EventBase):
 
 class Event(EventBase):
     id: int
-    host_id: int
+    # host_id: int
     number_of_registerd: int
