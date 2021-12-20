@@ -109,9 +109,10 @@ def read_user(user_id: int, db: Session = Depends(get_db)):
     return db_user
 # event
 
-@app.post ("/event/create/")
+@app.post ("/event/create/", dependencies=[Depends(cookie)])
 def create_event(event: schemas.EventCreate, db:Session = Depends(get_db)):
-    if (crud.get_event_by_name):
+    # crud.get_user_by_email(db=db,email=)
+    if (crud.get_event_by_name(db=db,name=event.name)):
         raise HTTPException(400,"活動名稱重複")
     return crud.create_event(db=db,event=event)
 
@@ -137,6 +138,7 @@ def get_events(page_num: int, db: Session = Depends(get_db)):
 async def whoami(session_data: schemas.SessionData = Depends(verifier)):
     if (datetime.datetime.now() > session_data.expired):
         raise HTTPException(status_code=400,detail="cookie expired,login agian")
+    print(session_data.__dict__)
     return session_data
     
 @app.post("/delete_session")

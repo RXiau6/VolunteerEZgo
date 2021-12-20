@@ -32,6 +32,7 @@ class Event(Base):
     register_deadline = Column(DateTime)
     start_date = Column(DateTime)
     over_date = Column(DateTime)
+    # during_time = Column(String(50))
     Auth_hour = Column(Float)
     number_of_attendable = Column(Integer)
     number_of_registerd = Column(Integer,default=0)

@@ -38,6 +38,7 @@ def create_user(db: Session, user: schemas.UserCreate):
 def get_event_by_name(db: Session, name: str):
 
     return db.query(models.Event).filter(models.Event.name == name).first()
+
 def user_auth(db: Session, user: schemas.UserLogin):
     if (db.query(models.User).filter(models.User.email != user.email)):
         print (db.query(models.User).filter(models.User.email).first())
@@ -65,7 +66,12 @@ def create_event(db: Session,event:schemas.EventCreate):
     db.commit()
     db.refresh(db_event)
     return db_event
-    
+
+def get_events(db: Session, skip: int = 0, limit: int = 12):
+    for m in db.query(models.Event).offset(skip).limit(limit).all():
+        print (m.__dict__)
+    return db.query(models.Event).offset(skip).limit(limit).all()
+
 def salt_gen():
     letter = []
     for i in range(16):
