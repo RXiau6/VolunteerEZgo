@@ -58,7 +58,6 @@ def create_event(db: Session,event:schemas.EventCreate):
         register_deadline=event.register_deadline,
         start_date=event.start_date,
         over_date=event.over_date,
-        during_time=event.during_time,
         Auth_hour=event.Auth_hour,
         number_of_attendable=event.number_of_attendable
         )
