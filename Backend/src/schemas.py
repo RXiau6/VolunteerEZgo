@@ -37,7 +37,6 @@ class EventCreate(EventBase):
     Auth_hour: float
     start_date: str
     over_date: str
-    during_time: str
     number_of_attendable: int
 
 
