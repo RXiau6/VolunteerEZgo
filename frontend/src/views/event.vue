@@ -7,7 +7,6 @@
           <div class="card-body p-5 text-center">
 
             <div class="mb-md-5 mt-md-4 pb-5">
-              <p v-for="d in rtn_data" :key="d.name" v-if="d.name === 2">{{ d.name }}</p>
 
               <h2 class="fw-bold mb-2 text-uppercase">建立活動</h2>
               <p class="text-white-50 mb-5">Please enter your event information</p>
@@ -44,6 +43,8 @@
               <div class="form-outline form-white mb-4">
                 <input type="number" id="quantity" name="quantity" min="1" max="30" v-model="number_of_attendable">
                 <label class="form-label" for="typenumber_of_attendableX">人數</label>
+                <input type="number" id="quantity" name="quantity" min="1" max="8" v-model="Auth_hour">
+                <label class="form-label" for="typeAuth_hourX">配發時數</label>
               </div>
 
              <form @submit.prevent="event">
@@ -66,33 +67,31 @@
 export default {
   data(){
     return {
-      rtn_data: [], 
       name: '',
       types: '',
       description: '',
       register_deadline: '',
       start_date: '',
       over_date: '',
+      Auth_hour:'',
       number_of_attendable: '',
     }
   },
-  created: function() { 
-    this.rtn_data[0] = {name: 1};
-    this.rtn_data[1] = {name: 2};
-  },
   methods: {
     event(){
-            this.axios.post('http://127.0.0.1:8000/event/create/',{
+            this.axios.post('http://localhost:8000/event/create/',{
               "name":this.name,
               "types":this.types,
               "description":this.description,
               "register_deadline":this.register_deadline,
               "start_date":this.start_date,
               "over_date":this.over_date,
+              "Auth_hour":this.Auth_hour,
               "number_of_attendable":this.number_of_attendable
             }).then((response) => {
               if(response.status==200){
                   console.log("Event create success!")
+                  this.$router.push('/');                  
               }
               else if(response.status!=200){
                 console.log(response.data)

@@ -32,17 +32,17 @@
         </footer>
         
       <section class="py-5">
-            <div class="container px-4 px-lg-5 mt-5">
-                <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
-                    <div class="col mb-5">
+            <div class="container px-4 px-lg-5 mt-5"  >
+                <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center" >
+                    <div class="col mb-5" v-for="list in rtn_data" :key="list.name">
                         <div class="card h-100">
 
                             <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." />    
                                                    
                            <div class="card-body p-3">
                                 <div align="left">
-                                    <h5 class="fw-bolder">活動名稱</h5>
-                                    <p><h7 class="fw-bolder">舉辦地點:</h7><br><h7 class="fw-bolder">區域:</h7><br><h7 class="fw-bolder">類別:</h7><br><h7 class="fw-bolder">人數:</h7></p>
+                                    <h5 class="fw-bolder">活動名稱: {{list.name}}</h5>
+                                    <p><h7 class="fw-bolder">活動說明: {{list.description}}</h7><br><h7 class="fw-bolder">類別: {{list.types}}</h7><br><h7 class="fw-bolder">人數:{{ list.number_of_attendable}}</h7></p>
                                 </div>
                             </div>
 
@@ -55,6 +55,7 @@
                 </div>
             </div>
         </section>
+    
     </body>
 </html>
 
@@ -63,8 +64,34 @@
 <script>
 
 export default {
-  name: 'Home',
-  components: {
+  data(){
+    return {
+       
+        rtn_data: [], 
+    }
+  },
+  created: function() { 
+      this.axios.get('http://localhost:8000/events/0/'
+            ).then((response) => {
+              console.log(response.data);
+              this.rtn_data = response.data;
+              })
+    
+  },
+  computed: {
+      rows() {
+        return this.items.length
+      }
+    },
+  methods: {
+    page(){
+            this.axios.get('http://localhost:8000/events/${page}/'
+            ).then((response) => {
+              console.log(response.data);
+              this.rtn_data = response.data;
+              })
+    }
   }
-}
+  }
+
 </script>
