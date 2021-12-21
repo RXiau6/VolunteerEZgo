@@ -69,8 +69,6 @@ def create_event(db: Session,event:schemas.EventCreate):
     return db_event
 
 def get_events(db: Session, skip: int = 0, limit: int = 12):
-    for m in db.query(models.Event).offset(skip).limit(limit).all():
-        print (m.__dict__)
     return db.query(models.Event).offset(skip).limit(limit).all()
 
 def salt_gen():

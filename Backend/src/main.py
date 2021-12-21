@@ -110,7 +110,9 @@ def read_user(user_id: int, db: Session = Depends(get_db)):
 # event
 
 @app.post ("/event/create/", dependencies=[Depends(cookie)])
-def create_event(event: schemas.EventCreate, db:Session = Depends(get_db)):
+async def create_event(event: schemas.EventCreate, session_data : schemas.SessionData = Depends(verifier), db:Session = Depends(get_db)):
+    if (datetime.datetime.now() > session_data.expired):
+        raise HTTPException(status_code=400,detail="cookie expired,login agian")
     # crud.get_user_by_email(db=db,email=)
     if (crud.get_event_by_name(db=db,name=event.name)):
         raise HTTPException(400,"活動名稱重複")
