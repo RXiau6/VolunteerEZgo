@@ -7,6 +7,7 @@
           <div class="card-body p-5 text-center">
 
             <div class="mb-md-5 mt-md-4 pb-5">
+              <p v-for="d in rtn_data" :key="d.name" v-if="d.name === 2">{{ d.name }}</p>
 
               <h2 class="fw-bold mb-2 text-uppercase">建立活動</h2>
               <p class="text-white-50 mb-5">Please enter your event information</p>
@@ -65,6 +66,7 @@
 export default {
   data(){
     return {
+      rtn_data: [], 
       name: '',
       types: '',
       description: '',
@@ -73,6 +75,10 @@ export default {
       over_date: '',
       number_of_attendable: '',
     }
+  },
+  created: function() { 
+    this.rtn_data[0] = {name: 1};
+    this.rtn_data[1] = {name: 2};
   },
   methods: {
     event(){

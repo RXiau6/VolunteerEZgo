@@ -52,7 +52,7 @@ app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=config.origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -91,6 +91,10 @@ async def login_user(response:Response, from_data: schemas.UserLogin, db: Sessio
     data = schemas.SessionData(username=db_user.__dict__['email'],expired=datetime.datetime.now() + datetime.timedelta(seconds=30))
     await cookies.backend.create(session, data)
     cookie.attach_to_response(response, session)
+    # response.set_cookie("test", "TEST")
+    print ("------------------")
+    print (response.__dict__)
+    print ("------------------")
     ## return
     return HTTPException(status_code=200,detail="登入成功！")
         
@@ -121,7 +125,7 @@ async def create_event(event: schemas.EventCreate, db:Session = Depends(get_db))
 @app.get ("/events/{page_num}")
 def get_events(page_num: int, db: Session = Depends(get_db)):
     events = crud.get_events(db, skip=page_num*12)
-    return 
+    return events
 # session route
 # from uuid import uuid4
 # @app.post("/create_session/{name}")

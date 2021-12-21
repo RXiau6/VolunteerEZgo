@@ -45,6 +45,7 @@
 </template>
 
 <script>
+
 export default {
   data(){
     return {
@@ -54,7 +55,7 @@ export default {
   },
   methods: {
     Login(){
-            this.axios.post('http://127.0.0.1:8000/login/',{
+            this.axios.post('http://localhost:8000/login/',{
               "email":this.email,
               "password":this.password
             }).then((response) => {
