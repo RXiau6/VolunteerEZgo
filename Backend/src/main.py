@@ -121,7 +121,7 @@ async def create_event(event: schemas.EventCreate, session_data : schemas.Sessio
 @app.get ("/events/{page_num}")
 def get_events(page_num: int, db: Session = Depends(get_db)):
     events = crud.get_events(db, skip=page_num*12)
-    return events
+    return 
 # session route
 # from uuid import uuid4
 # @app.post("/create_session/{name}")

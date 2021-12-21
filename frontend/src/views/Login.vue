@@ -58,7 +58,10 @@ export default {
               "email":this.email,
               "password":this.password
             }).then((response) => {
-            console.log(response.data)
+              if(response.status==200){
+                  console.log("register success!")
+                  this.$router.push('/');
+              }
             })
           }
   }
