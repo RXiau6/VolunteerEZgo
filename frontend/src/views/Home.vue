@@ -1,4 +1,6 @@
+
 <template>
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -55,7 +57,15 @@
                 </div>
             </div>
         </section>
-    
+        <nav class="mb-4 d-flex justify-content-center">
+            <pagination
+                v-model="page"
+                :records="listings.total"
+                :per-page="listings.per_page"
+                @paginate="paginate"
+            />
+        </nav>
+
     </body>
 </html>
 
@@ -63,10 +73,20 @@
 
 <script>
 
+import Pagination from "v-pagination-3";
+
+
 export default {
+    components: {
+    Pagination: Pagination,
+  },
   data(){
     return {
-       
+        page: 1,
+        listings: {
+        total: 100,
+        per_page: 15,
+      },
         rtn_data: [], 
     }
   },
@@ -78,15 +98,12 @@ export default {
               })
     
   },
-  computed: {
-      rows() {
-        return this.items.length
-      }
-    },
+  
   methods: {
-    page(){
-            this.axios.get('http://localhost:8000/events/${page}/'
-            ).then((response) => {
+    paginate(){
+
+            this.axios.get('http://localhost:8000/events/' + (parseInt(this.page,10)-1).toString())
+            .then((response) => {
               console.log(response.data);
               this.rtn_data = response.data;
               })
