@@ -14,13 +14,10 @@ class User(Base):
     birth = Column(Date)
     is_active = Column(Boolean, default=False)
     salt = Column(String(16))
-    # event = relationship("Event")
-# class Category(Base):
-#     __tablename__ = "category"
-#     type = Column(String(20)) #活動類別
-#     hold_place = Column(String(10)) #舉辦地點
-    
-#     # event = relationship("Event")
+
+    Event = relationship("Event", back_populates="User")
+    Attend = relationship("Attend", back_populates="User")
+
 class Event(Base):
     __tablename__ = "events"
 
@@ -28,7 +25,7 @@ class Event(Base):
     types = Column(String(10))
     name = Column(String(128))
     description = Column(String(1024))
-    # host_id = Column(Integer, ForeignKey('users.id'))
+    host_id = Column(String(254), ForeignKey('users.email'))
     register_deadline = Column(DateTime)
     start_date = Column(DateTime)
     over_date = Column(DateTime)
@@ -37,4 +34,15 @@ class Event(Base):
     number_of_attendable = Column(Integer)
     number_of_registerd = Column(Integer,default=0)
 
-    # users = relationship("User", back_populates="Event")
+    Attend = relationship("Attend", back_populates="Event")
+    User = relationship("User", back_populates="Event")
+
+class Attend(Base):
+    __tablename__ = "attend"
+
+    id = Column(Integer, primary_key=True, index=True)
+    attend_id = Column(Integer, ForeignKey('users.id'))
+    event_id = Column(Integer, ForeignKey('events.id'))
+
+    User = relationship("User",back_populates="Attend")
+    Event = relationship("Event",back_populates="Attend")

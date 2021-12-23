@@ -47,6 +47,7 @@ verifier = cookies.BasicVerifier(
 )
 
 # main app
+# models.Base.metadata.drop_all(bind=engine)
 models.Base.metadata.create_all(bind=engine)
 app = FastAPI()
 
@@ -88,7 +89,7 @@ async def login_user(response:Response, from_data: schemas.UserLogin, db: Sessio
     ## Cookie
     from uuid import uuid4
     session = uuid4()
-    data = schemas.SessionData(username=db_user.__dict__['email'],expired=datetime.datetime.now() + datetime.timedelta(seconds=30))
+    data = schemas.SessionData(username=db_user.__dict__['email'],expired=datetime.datetime.now() + datetime.timedelta(minutes=30))
     await cookies.backend.create(session, data)
     cookie.attach_to_response(response, session)
     # response.set_cookie("test", "TEST")
@@ -117,13 +118,16 @@ def read_user(user_id: int, db: Session = Depends(get_db)):
 async def create_event(event: schemas.EventCreate, db:Session = Depends(get_db)):
     # if (datetime.datetime.now() > session_data.expired):
     #     raise HTTPException(status_code=400,detail="cookie expired,login agian")
-    # crud.get_user_by_email(db=db,email=)
+
     if (crud.get_event_by_name(db=db,name=event.name)):
         raise HTTPException(400,"活動名稱重複")
+
     return crud.create_event(db=db,event=event)
+# @app.get ("/event/attend")
+# async def attend_event(event:schemas.EventAttend, db:Session = Depends(get_db)):
 
 @app.get ("/events/{page_num}")
-def get_events(page_num: int, db: Session = Depends(get_db)):
+def get_events(page_num: int = 0, db: Session = Depends(get_db)):
     events = crud.get_events(db, skip=page_num*12)
     return events
 # session route

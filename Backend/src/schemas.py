@@ -5,6 +5,8 @@ from sqlalchemy.sql.sqltypes import String
 
 from pydantic import BaseModel
 
+from .database import Base
+
 class SessionData (BaseModel):
     username: str
     expired: datetime.datetime
@@ -38,9 +40,17 @@ class EventCreate(EventBase):
     start_date: str
     over_date: str
     number_of_attendable: int
+    host_id: str
 
 
 class Event(EventBase):
     id: int
     # host_id: int
     number_of_registerd: int
+
+class AttendBase(BaseModel):
+    attend_id: int
+    event_id: int
+
+class Attend(AttendBase):
+    id: int
