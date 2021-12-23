@@ -49,8 +49,8 @@ class Event(EventBase):
     number_of_registerd: int
 
 class AttendBase(BaseModel):
+
     attend_id: int
     event_id: int
-
 class Attend(AttendBase):
     id: int

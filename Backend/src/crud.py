@@ -1,3 +1,4 @@
+from os import name
 from pydantic import networks
 from sqlalchemy import types
 from sqlalchemy.orm import Session
@@ -66,6 +67,16 @@ def create_event(db: Session,event:schemas.EventCreate):
     db.commit()
     db.refresh(db_event)
     return db_event
+
+def attend_event(db: Session,attend:schemas.Attend):
+    db_attend = models.Attend(
+        attend_id=attend.attend_id,
+        event_id=attend.event_id
+        )
+    db.add(db_attend)
+    db.commit()
+    db.refresh(db_attend)
+    return db_attend
 
 def get_events(db: Session, skip: int = 0, limit: int = 12):
     return db.query(models.Event).offset(skip).limit(limit).all()

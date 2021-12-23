@@ -123,8 +123,20 @@ async def create_event(event: schemas.EventCreate, db:Session = Depends(get_db))
         raise HTTPException(400,"活動名稱重複")
 
     return crud.create_event(db=db,event=event)
-# @app.get ("/event/attend")
-# async def attend_event(event:schemas.EventAttend, db:Session = Depends(get_db)):
+
+@app.post ("/event/attend")
+async def attend_event(response:Response, from_data: schemas.AttendBase, db: Session = Depends(get_db) ):
+    # ## Auth
+    # db_user = crud.get_user_by_email(db, email=from_data.email)
+    # if db_user:
+    #     if from_data.password != db_user.__dict__['hashed_passwd']:
+    #         raise HTTPException(status_code=400, detail="密碼錯誤！")
+    # else:
+    #     raise HTTPException(status_code=400, detail="查無此帳號")
+    # from_data.attend_id = db_user.id
+
+    return crud.attend_event(db=db,attend=from_data)
+
 
 @app.get ("/events/{page_num}")
 def get_events(page_num: int = 0, db: Session = Depends(get_db)):
