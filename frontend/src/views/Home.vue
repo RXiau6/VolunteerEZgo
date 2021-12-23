@@ -1,4 +1,6 @@
+
 <template>
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -32,17 +34,17 @@
         </footer>
         
       <section class="py-5">
-            <div class="container px-4 px-lg-5 mt-5">
-                <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
-                    <div class="col mb-5">
+            <div class="container px-4 px-lg-5 mt-5"  >
+                <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center" >
+                    <div class="col mb-5" v-for="list in rtn_data" :key="list.name">
                         <div class="card h-100">
 
                             <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." />    
                                                    
                            <div class="card-body p-3">
                                 <div align="left">
-                                    <h5 class="fw-bolder">活動名稱</h5>
-                                    <p><h7 class="fw-bolder">舉辦地點:</h7><br><h7 class="fw-bolder">區域:</h7><br><h7 class="fw-bolder">類別:</h7><br><h7 class="fw-bolder">人數:</h7></p>
+                                    <h5 class="fw-bolder">活動名稱: {{list.name}}</h5>
+                                    <p><h7 class="fw-bolder">活動說明: {{list.description}}</h7><br><h7 class="fw-bolder">類別: {{list.types}}</h7><br><h7 class="fw-bolder">人數:{{ list.number_of_attendable}}</h7></p>
                                 </div>
                             </div>
 
@@ -55,6 +57,15 @@
                 </div>
             </div>
         </section>
+        <nav class="mb-4 d-flex justify-content-center">
+            <pagination
+                v-model="page"
+                :records="listings.total"
+                :per-page="listings.per_page"
+                @paginate="paginate"
+            />
+        </nav>
+
     </body>
 </html>
 
@@ -62,9 +73,42 @@
 
 <script>
 
+import Pagination from "v-pagination-3";
+
+
 export default {
-  name: 'Home',
-  components: {
+    components: {
+    Pagination: Pagination,
+  },
+  data(){
+    return {
+        page: 1,
+        listings: {
+        total: 100,
+        per_page: 15,
+      },
+        rtn_data: [], 
+    }
+  },
+  created: function() { 
+      this.axios.get('http://localhost:8000/events/0/'
+            ).then((response) => {
+              console.log(response.data);
+              this.rtn_data = response.data;
+              })
+    
+  },
+  
+  methods: {
+    paginate(){
+
+            this.axios.get('http://localhost:8000/events/' + (parseInt(this.page,10)-1).toString())
+            .then((response) => {
+              console.log(response.data);
+              this.rtn_data = response.data;
+              })
+    }
   }
-}
+  }
+
 </script>
