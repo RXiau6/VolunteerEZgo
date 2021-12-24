@@ -16,6 +16,10 @@
                 <label class="form-label" for="typenameX">活動名稱</label>
               </div>
               <div class="form-outline form-white mb-4">
+                <input type="name" id="typehost_idX" class="form-control form-control-lg" v-model="host_id" />
+                <label class="form-label" for="typehost_idX">主辦人</label>
+              </div>
+              <div class="form-outline form-white mb-4">
                 <select class="form-select" aria-label="Default select example" v-model="types">
                     <option value="1">One</option>
                     <option value="2">Two</option>
@@ -68,6 +72,7 @@ export default {
   data(){
     return {
       name: '',
+      host_id: '',
       types: '',
       description: '',
       register_deadline: '',
@@ -81,6 +86,7 @@ export default {
     event(){
             this.axios.post('http://localhost:8000/event/create/',{
               "name":this.name,
+              "host_id":this.host_id,
               "types":this.types,
               "description":this.description,
               "register_deadline":this.register_deadline,
