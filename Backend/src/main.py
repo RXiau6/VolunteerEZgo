@@ -125,19 +125,25 @@ async def create_event(event: schemas.EventCreate, db:Session = Depends(get_db))
     return crud.create_event(db=db,event=event)
 
 @app.post ("/event/attend")
-async def attend_event(response:Response, from_data: schemas.AttendBase, db: Session = Depends(get_db) ):
-    # ## Auth
-    # db_user = crud.get_user_by_email(db, email=from_data.email)
-    # if db_user:
-    #     if from_data.password != db_user.__dict__['hashed_passwd']:
-    #         raise HTTPException(status_code=400, detail="密碼錯誤！")
-    # else:
-    #     raise HTTPException(status_code=400, detail="查無此帳號")
-    # from_data.attend_id = db_user.id
+async def attend_event(response:Response, from_data: schemas.AttendAuth, db: Session = Depends(get_db) ):
+    ## Auth
+    db_user = crud.get_user_by_email(db, email=from_data.email)
+    if db_user:
+        if from_data.password != db_user.__dict__['hashed_passwd']:
+            raise HTTPException(status_code=400, detail="密碼錯誤！")
+    else:
+        raise HTTPException(status_code=400, detail="查無此帳號")
+    ## ready_payload
+    query = schemas.AttendBase(attend_id=db_user.id, event_id=from_data.event_id)
+    # query.attend_id = db_user.id
+    # query.event_id = from_data.event_id
+    is_repeat = crud.check_repeat(db=db, payload=query)
+    if (is_repeat):
+        raise HTTPException(400,"重複報名")
 
-    return crud.attend_event(db=db,attend=from_data)
+    return crud.attend_event(db=db, attend=query)
 
-
+    
 @app.get ("/events/{page_num}")
 def get_events(page_num: int = 0, db: Session = Depends(get_db)):
     events = crud.get_events(db, skip=page_num*12)

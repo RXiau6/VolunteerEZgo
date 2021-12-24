@@ -37,8 +37,15 @@ def create_user(db: Session, user: schemas.UserCreate):
     return db_user
 
 def get_event_by_name(db: Session, name: str):
-
     return db.query(models.Event).filter(models.Event.name == name).first()
+
+def check_repeat (db: Session,payload: schemas.AttendBase):
+    event_list = db.query(models.Attend).filter(models.Attend.event_id == payload.event_id).all()
+    for i in range (len(event_list)):
+        l2d = event_list[i].__dict__
+        if (l2d["attend_id"] == payload.attend_id):
+            return True
+    return False
 
 def user_auth(db: Session, user: schemas.UserLogin):
     if (db.query(models.User).filter(models.User.email != user.email)):
@@ -68,7 +75,7 @@ def create_event(db: Session,event:schemas.EventCreate):
     db.refresh(db_event)
     return db_event
 
-def attend_event(db: Session,attend:schemas.Attend):
+def attend_event(db: Session,attend:schemas.AttendBase):
     db_attend = models.Attend(
         attend_id=attend.attend_id,
         event_id=attend.event_id

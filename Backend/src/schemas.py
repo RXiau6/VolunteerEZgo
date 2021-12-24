@@ -48,9 +48,13 @@ class Event(EventBase):
     # host_id: int
     number_of_registerd: int
 
-class AttendBase(BaseModel):
+class AttendAuth(UserBase):
+    password: str
+    event_id: int
 
+class AttendBase(BaseModel):
     attend_id: int
     event_id: int
+    
 class Attend(AttendBase):
     id: int
