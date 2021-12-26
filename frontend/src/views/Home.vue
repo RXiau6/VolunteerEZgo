@@ -82,6 +82,7 @@
                   class="btn btn-outline-dark mt-auto"
                   data-bs-toggle="modal"
                   data-bs-target="#exampleModal"
+                  v-on:click="select_list(list.id)"
                 >
                   預約
                 </button>
@@ -116,7 +117,7 @@
                       <div class="modal-body">配發時數: {{ list.Auth_hour }}</div>
                       <div class="modal-body">需求人數: {{ list.number_of_attendable }}</div>
                       <div class="form-outline form-white mb-3" style="display:none">
-                          <input type="email" id="typeEmailX" class="form-control form-control-lg" v-model="list.id" />
+                          <input type="email" id="typeidX" class="form-control form-control-lg" v-model="list.id" />
                       </div>
                       <div class="form-outline form-white mb-3">
                         <input type="email" id="typeEmailX" class="form-control form-control-lg" v-model="email" />
@@ -132,9 +133,11 @@
                         >
                           取消
                         </button>
-                        <button type="button" class="btn btn-primary" @submit.prevent="confirm">
+                      <form @submit.prevent="confirm">
+                        <button type="submit" class="btn btn-primary">
                           確認預約
                         </button>
+                      </form>
                       </div>
                     </div>
                   </div>
@@ -165,7 +168,9 @@ export default {
   },
   data() {
     return {
-
+      list_id: '',
+      email: '',
+      password: '',
       page: 1,
       listings: {
         total: 100,
@@ -183,7 +188,16 @@ export default {
 
   methods: {
     confirm(){
-
+        this.axios
+            .post("http://localhost:8000/event/attend",
+            {
+              "event_id": this.list_id,
+              "email":this.email,
+              "password":this.password
+              })
+            .then((response) => {
+                console.log(response.data);
+            });
     },
     paginate() {
       this.axios
@@ -196,6 +210,11 @@ export default {
           this.rtn_data = response.data;
         });
     },
+
+    select_list(id) {
+      this.list_id = id;
+      console.log(this.list_id)
+    }
   },
 };
 </script>
