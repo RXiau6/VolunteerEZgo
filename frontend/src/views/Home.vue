@@ -196,7 +196,14 @@ export default {
               "password":this.password
               })
             .then((response) => {
-                console.log(response.data);
+                if (response.status == 200){
+                  this.$router.push('/');
+                  alert("預約成功")
+                }
+            })
+            .catch(() =>{
+                this.$router.push('/');
+                alert("預約失敗")
             });
     },
     paginate() {
