@@ -200,6 +200,7 @@ export default {
                   this.$router.push('/');
                   alert("預約成功")
                 }
+                
             })
             .catch(() =>{
                 this.$router.push('/');
