@@ -206,9 +206,15 @@ export default {
             (parseInt(this.page, 10) - 1).toString()
         )
         .then((response) => {
-          console.log(response.data);
-          this.rtn_data = response.data;
-        });
+          if (response.status == 200){
+                  this.$router.push('/');
+                  alert("預約成功")
+                }
+        })
+        .catch(() =>{
+                this.$router.push('/');
+                alert("預約失敗")
+            });
     },
 
     select_list(id) {
